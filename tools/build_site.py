@@ -978,7 +978,9 @@ FOOTER_TOP = u"clamp(40px, 5vw, 60px)"
 
 def deco_tag(rnd, rel, x, y, index):
     """装飾画像1枚ぶんのHTML"""
-    src = u"%s?v=%s" % (quote(rel), asset_ver(rel))
+    # ファイル名は NFC に正規化してからURLにする
+    # （macOSは濁点を分けて保存するが、GitHub上のファイル名は結合済みのため）
+    src = u"%s?v=%s" % (quote(unicodedata.normalize("NFC", rel)), asset_ver(rel))
     rot = rnd.uniform(-20, 20)          # 回転しても余白に収まる範囲
     rad = math.radians(rot)
     k = abs(math.cos(rad)) + abs(math.sin(rad))   # 回転で広がる分
