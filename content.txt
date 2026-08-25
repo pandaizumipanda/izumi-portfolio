@@ -1,0 +1,357 @@
+# ==========================================================================
+#  サイトのテキストはこのファイルだけを編集してください。
+#
+#  編集したら次のコマンドでHTMLに反映します（HTMLは自動生成されます）:
+#      python tools/build_site.py
+#
+#  書き方のルール
+#    ・「#」で始まる行はメモです（サイトには出ません）
+#    ・「[work]」のように [ ] で囲んだ行から、次の [ ] までが1つのかたまり
+#    ・「項目: 内容」の形で書きます（最初の「:」までが項目名）
+#    ・「text:」のように同じ項目を何度も書くと、その分だけ段落が増えます
+#    ・長い文は次の行に続けて書けます（行頭に「:」を含めない行は前の続き）
+#    ・内容を空にすると、その項目は表示されません
+#    ・本文の中にリンクを入れたいときは [表示する文字](リンク先) と書きます
+#    ・image: に書くのは images/ フォルダのファイル名（.png は省略可）
+# ==========================================================================
+
+
+# ============================================================ サイト全体
+[site]
+name: IZUMI FUKUYAMA
+tagline: Illustration / Graphic / Web / Vibe Coding / Project
+base_url: https://example.com/
+instagram: #
+# お問い合わせフォームの送信先メールアドレス（ここを自分のアドレスに書き換えてください）
+email: your@example.com
+# フォームサービス（Formspree など）を使う場合だけ、その送信先URLを書きます。
+# 空のままなら、送信ボタンで訪問者のメールソフトが立ち上がります。
+form_action:
+
+# ヘッダーとフッターのメニュー（ファイル名 | 表示名）
+[nav]
+item: works.html | Works
+item: event.html | Event
+item: about.html | About
+item: contact.html | Contact
+
+# フッター右側の一覧（見出しと項目）
+[footer]
+head: Fields
+item: Vibe Coding
+item: Illustration
+item: Graphic Design
+item: Web / UI
+
+
+# ================================================== 各ページのタイトル等
+[page index]
+title: IZUMI FUKUYAMA｜Creator / Vibe Coding Instructor
+description: 福山いずみのポートフォリオ。イラスト、グラフィック、Web、バイブコーディング、企画など、ジャンルを横断した制作と、生成AIをテーマにした講座・登壇の実績をまとめています。
+
+[page works]
+title: WORKS｜IZUMI FUKUYAMA
+description: イラスト、グラフィック、Webアプリ、プロダクト、企画、情報デザイン、研究まで。福山いずみのこれまでの制作一覧。
+
+[page event]
+title: EVENT｜IZUMI FUKUYAMA
+description: 生成AI・バイブコーディングをテーマにしたワークショップ、講座、登壇のプログラム紹介。
+
+[page about]
+title: ABOUT｜IZUMI FUKUYAMA
+description: 福山いずみのプロフィール。大阪芸術大学デザイン学科卒。ジャンルを横断したものづくりと、バイブコーディング講師としての活動。
+
+[page contact]
+title: CONTACT｜IZUMI FUKUYAMA
+description: イラスト制作、デザイン、Web制作、ワークショップ・講演などのご相談はこちらから。
+
+[page privacy]
+title: PRIVACY POLICY｜IZUMI FUKUYAMA
+description: 当サイトにおける個人情報の取り扱いについて。
+
+
+# ==================================================== TOP：ヒーロー / 帯
+[hero]
+label: Illustration / Graphic / Web / Vibe Coding / Project
+catch: アイデアを、
+catch_em: いろんな形に。
+text: 絵を描いたり、デザインしたり、Webをつくったり。「つくってみたい」から始まったアイデアを、ジャンルにとらわれず形にしています。
+text: 現在は個人でのものづくりを続けながら、バイブコーディング講師として、AIと一緒にアイデアを形にする方法を伝えています。
+button: View Works | works.html
+button_ghost: Contact | contact.html
+# ヒーロー下のスクロール案内（空にすると非表示）
+scroll_label: Scroll
+image: hero-main
+image_sub: hero-sub-01
+image_sub: hero-sub-02
+image_sub: hero-sub-03
+
+
+# ================================================================= WORKS
+[works]
+label: Works
+title: Works
+catch: つくったもの。
+lead: イラスト、グラフィック、Webアプリ、プロダクト、企画など、これまでの制作をまとめています。表現方法を先に決めるのではなく、「何をつくりたいか」に合わせて、そのアイデアに適した方法を選んでいます。
+page_lead: 表現方法を先に決めるのではなく、「何をつくりたいか」に合わせて、そのアイデアに適した方法を選んでいます。
+# TOPに載せる作品（下の image: の番号を並べる）
+pickup: works-01, works-02, works-03, works-04, works-05, works-08
+
+# 絞り込みボタン（英数字の記号 | 表示名 | 説明）
+# ここの記号を各作品の category: に書くと、その分類に入ります
+[filter]
+item: all | All | すべての制作
+item: vibe-coding | Vibe Coding | AIを活用したWebアプリケーションやプロトタイプ
+item: web | Web | Webサイト・Webアプリケーション
+item: illustration | Illustration | 人物・キャラクター・ファンアート
+item: graphic | Graphic | ポスター・SNS・パッケージ・ビジュアル
+item: product | Product | グッズ・プロダクト
+item: project | Project | 企画・地域活動・複合的な制作
+item: information-design | Information Design | 資料・教材・情報整理・図解
+
+
+# ---------------------------------------------------------- 作品（10件）
+# 並べた順にサイトへ表示されます。増やすときは [work] からコピーしてください。
+
+[work]
+image: works-01
+title: ご当地ほりにし 大阪府河南町
+category: graphic, illustration, product
+catch: 地域の特徴を、一本のラベルに。
+text: 全国各地の地域とアウトドアスパイス「ほりにし」がコラボレーションする「ご当地ほりにし」。
+text: 大阪府河南町のオリジナルラベルとして採用されたデザインを制作しました。
+text: 河南町の地元野菜と「道の駅かなん」の駅舎をモチーフに、地域の特徴を一本のラベルに構成しています。
+role: Illustration / Label Design / Graphic Design
+
+[work]
+image: works-02
+title: 人権アートプロジェクト「出口のない迷路」
+category: graphic, illustration, project
+catch: 「逃げ場がない」を、一枚のビジュアルに。
+text: 電通と美術大学生による人権アートプロジェクトで制作したポスター。
+text: 子どもの人権をテーマに、虐待を受けている子どもだけではなく、支援を求めたくても求められない大人にも目を向けました。
+text: 「逃げ場のない子どもがいる。逃げ場のない親もいる。」というコピーから、出口のない迷路をさまよう親子を着想し、ビジュアルとして表現しています。
+role: Concept / Copy / Illustration / Graphic Design
+
+[work]
+image: works-03
+title: ROHTO Social Media Creative
+category: graphic
+catch: SNSの中で、商品の魅力を伝える。
+text: 株式会社ロート製薬の広報デザインインターンシップで制作したSNSクリエイティブ。
+text: 季節商品を中心としたプロモーションとして、XやTikTokで使用する画像・動画を制作しました。
+text: 短時間で商品の特徴を理解できる情報設計と、SNS上で視線を止めるビジュアル表現を意識しています。
+role: Graphic Design / Social Media / Movie
+
+[work]
+image: works-04
+title: ANIMAL CROQUIS
+category: illustration, graphic
+catch: 自由に描くためのクロッキー帳。
+text: 大阪芸術大学のオープンキャンパスで、高校生向けに配布するクロッキー帳のデザインコンペで採用された作品。
+text: 白と黒の動物をモチーフに、同じ色を持ちながら、それぞれ異なる姿や特徴を持つ動物たちを描きました。
+text: 受け取った人にも、自分らしく自由に描いてほしいという思いを込めています。
+role: Concept / Illustration / Graphic Design
+
+[work]
+image: works-05
+title: Panda Daily
+category: vibe-coding, web, illustration
+catch: 笹っと進める、感情表現つきToDoアプリ。
+text: タスクの達成率に合わせて、パンダの表情やメッセージが変化するWebアプリ。
+text: 単にタスクを管理するだけではなく、進捗に小さなリアクションを加えることで、「終わらせること」そのものを少し楽しくする体験を考えました。
+role: Planning / UI / Illustration / Vibe Coding
+
+[work]
+image: works-06
+title: Can Label Maker
+category: vibe-coding, web, graphic
+catch: 好きなものを、一本の缶に。
+text: 市販の缶に貼るオリジナルラベルを、ブラウザ上で制作するWebアプリ。
+text: 写真、文字、カラーなどを組み合わせながら完成イメージを確認し、自分だけのラベルをデザインできます。
+text: 「デザインツールほど難しくなく、テンプレートだけより自由」な制作体験をテーマにしています。
+role: Planning / UI / Graphic / Vibe Coding
+
+[work]
+image: works-07
+title: Internet Literacy Learning App
+category: web, project, information-design
+catch: 選びながら学ぶ、インターネットリテラシー。
+text: 小中学生を対象に、インターネット上で起こる身近な出来事から情報リテラシーを学ぶWebアプリ。
+text: 説明を読むだけではなく、選択肢や疑似体験を通して「自分ならどうするか」を考えられる学習体験を目指しています。
+role:
+
+[work]
+image: works-08
+title: PANDA
+category: illustration, product, project
+catch: 日常を生きる、パンダたち。
+text: 仕事、生活、創作など、日常のちょっとした感情や出来事を、ゆるいパンダのキャラクターを通して表現するオリジナルシリーズ。
+text: イラストだけではなく、Webコンテンツやステッカー、ポストカード、アクリルグッズなど、さまざまな形への展開を想定しています。
+role:
+
+[work]
+image: works-09
+title: Fan Art
+category: illustration
+catch: 好きだと思った瞬間を、絵に残す。
+text: ダンサーやパフォーマーを中心に制作しているファンアート。
+text: 衣装や表情を再現するだけではなく、ステージを見たときに感じた空気、その人らしい動きや印象まで、一枚の絵として残すことを大切にしています。
+role: Illustration / Fan Art
+
+[work]
+image: works-10
+title: Commission
+category: illustration, graphic
+catch: その人らしさを、一枚の絵に。
+text: ダンサーや活動者を中心に制作しているCommission作品。
+text: 人物イラスト、ミニキャラクター、紹介ビジュアルなど、用途や活動スタイルに合わせた制作を行っています。
+text: 衣装、動き、表情などから、その人ならではの特徴や魅力を拾い上げることを意識しています。
+role: Illustration / Character / Visual
+
+
+# ================================================================= EVENT
+[event]
+label: Event
+title: Event
+catch: つくって、伝えて、届ける。
+lead: 生成AIやバイブコーディングをテーマにしたワークショップのほか、クリエイターズマーケットへの出展や個展など、つくったものを直接届ける場づくりも行っています。
+
+# ------------------------------------------------------ プログラム（3件）
+# 「（未記入）」の項目は、開催実績に合わせて記入してください。
+[program]
+image: event-01
+title: バイブコーディングワークショップ
+tag: Vibe Coding
+tag: Workshop
+catch: AIと一緒に、つくるところまで。
+text: 生成AIを使ったWeb制作を、実際に手を動かしながら体験するワークショップ。
+text: 生成AIの基本から、アイデア整理、要件定義、プロンプト作成、Web制作、改善までを実践形式で扱います。
+text: プログラミング経験の有無にかかわらず、自分のアイデアをWeb上で形にすることを目的としています。
+date: （未記入）
+place: （未記入）
+target: （未記入）
+theme: 生成AIを活用したWeb制作
+role: 講座構成 / スライド / 教材 / デモアプリ / 実践用プロンプト / 進行・登壇
+
+[program]
+image: event-02
+title: クリエイターズマーケット
+tag: Exhibition
+tag: Illustration
+catch: つくったものを、直接手渡す場所。
+text: イラストやグッズを持って出展する、クリエイターの展示・販売イベント。
+text: 作品そのものだけでなく、グッズの企画・制作、ブースのディスプレイ、告知用ビジュアルまで一貫してつくっています。
+date: （未記入）
+place: （未記入）
+role: 作品制作 / グッズ企画・制作 / ブースディスプレイ / 告知ビジュアル
+
+[program]
+image: event-03
+title: 個展
+tag: Exhibition
+tag: Illustration
+catch: ひとつのテーマを、ひと部屋で。
+text: これまでの制作をまとめて見てもらうための個展。
+text: 展示作品の制作から、テーマ設定、会場の構成、DMやポスターなどの印刷物まで自分で組み立てています。
+date: （未記入）
+place: （未記入）
+role: 作品制作 / 会場構成 / グラフィック / 告知
+
+
+# ================================================================= ABOUT
+[about]
+label: About
+name_line1: IZUMI
+name_line2: FUKUYAMA
+name_jp: 福山 いずみ
+role_label: Creator / Vibe Coding Instructor
+lead_jp: Creator / Vibe Coding Instructor｜Based in Osaka, Japan
+image: about-main
+text: イラスト、デザイン、Webなど、ジャンルを横断しながらものづくりをしています。
+text: 大学ではデザインを学び、産学連携、地域創生、コンペティションなど、さまざまなプロジェクトに参加しました。
+text: 現在は、イラストや個人Webアプリなどの制作を続けながら、バイブコーディング講師として生成AIを活用したものづくりを伝える活動をしています。
+text: 私が大切にしているのは、最初から表現方法を決めることではありません。
+quote: 「何をつくりたいか」から、方法を考える。
+text_after: 絵になることもあれば、グラフィックになることも、Webアプリになることもあります。
+text_after: AIによって「つくる」ための選択肢が大きく広がった今だからこそ、ジャンルにとらわれず、思いついたものを実際に形にしていきたいと考えています。
+based: Based in Osaka, Japan
+# TOPのABOUT欄で使う短い紹介
+top_text: イラスト、デザイン、Webなど、ジャンルを横断しながらものづくりをしています。
+top_text: 大学ではデザインを学び、産学連携、地域創生、コンペティションなど、さまざまなプロジェクトに参加しました。現在は、イラストや個人Webアプリなどの制作を続けながら、バイブコーディング講師として生成AIを活用したものづくりを伝える活動をしています。
+
+[fields]
+label: Fields
+title: Fields
+jp: 取り組んでいる分野
+
+[field]
+name: Vibe Coding
+text: AIと対話しながらWebアプリケーションやプロトタイプを制作。
+
+[field]
+name: Illustration
+text: 人物、ファンアート、キャラクター、Commission。
+
+[field]
+name: Graphic Design
+text: ポスター、SNS、パッケージ、情報デザイン。
+
+[field]
+name: Web / UI
+text: アイデアからUI設計、プロトタイプ制作まで。
+
+[field]
+name: Workshop / Lecture
+text: 生成AI・バイブコーディングをテーマとした講座・登壇。
+
+[field]
+name: Project
+text: 地域、教育、創作など、テーマから考えるものづくり。
+
+
+# =============================================================== CONTACT
+[contact]
+label: Contact
+title: Contact
+catch: 一緒に、何かつくりませんか。
+lead: イラスト制作、デザイン、Web制作、ワークショップ・講演などのご相談を受け付けています。内容がまだ具体的に決まっていない段階でも、お気軽にご連絡ください。
+page_lead_jp: Illustration / Design / Web / Workshop / Lecture
+form_intro: イラスト制作、デザイン、Web制作、ワークショップ・講演などのご相談を受け付けています。内容がまだ具体的に決まっていない段階でも、お気軽にご連絡ください。
+# お問い合わせ種別の選択肢
+option: イラスト制作のご依頼
+option: デザイン・グラフィックのご依頼
+option: Web制作・Webアプリのご相談
+option: ワークショップ・講座のご相談
+option: 講演・登壇のご相談
+option: 取材・メディア掲載
+option: その他
+# 各ページ下部のお誘い文
+cta_works_catch: 一緒に、何かつくりませんか。
+cta_works_lead: 制作のご相談は、内容が決まっていない段階でもお気軽にご連絡ください。
+cta_event_catch: 講座・登壇のご相談も承っています。
+cta_about_catch: 一緒に、何かつくりませんか。
+
+
+# =============================================================== PRIVACY
+# h2: が見出し、p: が本文、li: が箇条書き。書いた順に表示されます。
+[privacy]
+catch: 個人情報の取り扱いについて
+p: 福山いずみ（以下「当方」）は、当サイトを通じてご提供いただく個人情報を、以下の方針に基づき適切に取り扱います。
+h2: 1. 取得する情報
+p: お問い合わせフォームを通じて、お名前、会社名・団体名、メールアドレス、お問い合わせ内容をお預かりします。
+h2: 2. 利用目的
+li: お問い合わせへの回答およびご連絡のため
+li: ご依頼内容の確認、お見積り・ご提案のため
+h2: 3. 第三者への提供
+p: 法令に基づく場合を除き、ご本人の同意なく個人情報を第三者へ提供することはありません。
+h2: 4. アクセス解析
+p: 当サイトでは、サイトの利用状況を把握するためにアクセス解析ツールを利用する場合があります。取得される情報に個人を特定するものは含まれません。ブラウザの設定によりクッキーの利用を拒否することができます。
+h2: 5. 著作権
+p: 当サイトに掲載しているイラストレーション、デザイン、文章、その他コンテンツの著作権は当方または各権利者に帰属します。無断での複製・転載・二次利用はお控えください。
+p: 企業・団体との協働により制作した作品については、各権利者の許諾範囲において掲載しています。
+h2: 6. お問い合わせ窓口
+p: 個人情報の開示・訂正・削除のご請求は、[お問い合わせフォーム](contact.html)よりご連絡ください。
+h2: 7. 改定について
+p: 本ポリシーの内容は、必要に応じて予告なく変更する場合があります。変更後の内容は当サイトに掲載した時点から適用されます。
+updated: 最終更新日：（未記入）
