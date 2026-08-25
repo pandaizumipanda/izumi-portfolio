@@ -20,7 +20,7 @@
 [site]
 name: IZUMI FUKUYAMA
 tagline: Illustration / Graphic / Web / Vibe Coding / Project
-base_url: https://example.com/
+base_url: https://pandaizumipanda.github.io/izumi-portfolio/
 instagram: #
 # お問い合わせフォームの送信先メールアドレス（ここを自分のアドレスに書き換えてください）
 email: your@example.com
