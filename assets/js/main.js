@@ -1,474 +1,192 @@
-/* ==========================================================================
-   PORTFOLIO SITE  -  main.js
-   ライブラリ不要。全ページ共通で読み込みます。
-     1. モバイルメニュー開閉
-     2. ヘッダーのスクロール状態
-     3. スクロールに応じたフェードイン（.reveal）
-     4. カテゴリー絞り込み（WORKS）
-     5. ページトップへ戻るボタン
-     6. コピーライトの年号自動更新
-     7. お問い合わせフォームの送信ダミー処理
-     8. 見出しを1文字ずつに分割（data-anim="chars"）
-     9. リンク・ボタンの文字をホバーで入れ替える準備
-    10. 画像を押して詳細をポップアップ表示
-    11. スライドカード（前後ボタン・カウンター・ドラッグ）
-   ========================================================================== */
-(function () {
-  "use strict";
-
-  /* ------------------------------------------ 1. モバイルメニュー開閉 */
-  var burger = document.querySelector(".burger");
-  var nav = document.querySelector(".nav");
-
-  if (burger && nav) {
-    var toggleNav = function (open) {
-      burger.classList.toggle("is-open", open);
-      nav.classList.toggle("is-open", open);
-      burger.setAttribute("aria-expanded", String(open));
-      document.body.style.overflow = open ? "hidden" : "";
+/* Navigation, category filtering, accessible project dialogs and mail drafts. */
+(() => {
+  'use strict';
+  const uiCopy = JSON.parse(document.getElementById('site-ui-copy').textContent);
+  document.body.classList.add('enhanced');
+  const menu = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('#navigation');
+  const closeMenu = () => {
+    nav.classList.remove('is-open');
+    menu.setAttribute('aria-expanded', 'false');
+    menu.querySelector('span').textContent = '＋';
+  };
+  menu.addEventListener('click', () => {
+    const open = menu.getAttribute('aria-expanded') !== 'true';
+    nav.classList.toggle('is-open', open);
+    menu.setAttribute('aria-expanded', String(open));
+    menu.querySelector('span').textContent = open ? '−' : '＋';
+  });
+  nav.addEventListener('click', (event) => { if (event.target.closest('a')) closeMenu(); });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+      closeMenu(); menu.focus();
+    }
+  });
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.header')) closeMenu();
+  });
+  const projects = [...document.querySelectorAll('.project[data-category]')];
+  document.querySelectorAll('[data-filter]').forEach(button => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+      let count = 0;
+      projects.forEach(project => {
+        const show = filter === 'all' || project.dataset.category.split(',').map(s => s.trim()).includes(filter);
+        project.hidden = !show;
+        if (show) count++;
+      });
+      document.querySelector('.result-count').textContent = (count === 1 ? uiCopy.count_one : uiCopy.count_many).replace('{count}', String(count));
+    });
+  });
+  const dialog = document.querySelector('.modal');
+  if (dialog && typeof dialog.showModal === 'function') {
+    let trigger = null;
+    const openProject = (id, source) => {
+      const detail = document.getElementById(id);
+      if (!detail || !detail.classList.contains('project-detail')) return;
+      trigger = source || document.querySelector(`[data-project="${CSS.escape(id)}"]`);
+      const clone = detail.cloneNode(true);
+      clone.id = `modal-${id}`;
+      const heading = clone.querySelector('h2');
+      heading.id = `modal-title-${id}`;
+      clone.setAttribute('aria-labelledby', heading.id);
+      dialog.setAttribute('aria-labelledby', heading.id);
+      dialog.querySelector('.modal-content').replaceChildren(clone);
+      if (!dialog.open) dialog.showModal();
+      dialog.scrollTop = 0;
+      document.body.classList.add('modal-open');
     };
-
-    burger.addEventListener("click", function () {
-      toggleNav(!nav.classList.contains("is-open"));
-    });
-
-    // メニュー内のリンクを押したら閉じる
-    nav.addEventListener("click", function (e) {
-      if (e.target.closest("a")) toggleNav(false);
-    });
-
-    // Esc キーで閉じる
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && nav.classList.contains("is-open")) {
-        toggleNav(false);
-        burger.focus();
-      }
-    });
-
-    // PC幅に戻ったら状態をリセット
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 880 && nav.classList.contains("is-open")) {
-        toggleNav(false);
-      }
-    });
-  }
-
-  /* --------------------------------- 2. ヘッダーのスクロール状態 */
-  var header = document.querySelector(".header");
-  var toTop = document.querySelector(".to-top");
-
-  var onScroll = function () {
-    var y = window.pageYOffset || document.documentElement.scrollTop;
-    if (header) header.classList.toggle("is-scrolled", y > 8);
-    if (toTop) toTop.classList.toggle("is-visible", y > 480);
-  };
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  /* ---------------------------- 3. スクロールに応じたフェードイン */
-  var targets = document.querySelectorAll(".reveal, .a-up, [data-anim=\"chars\"]");
-
-  var show = function (el) {
-    el.classList.add("is-in");
-  };
-
-  // 保険：すでに画面内へ来ている（または通り過ぎた）のに未表示の要素を表示する
-  // （監視が届かない環境で、文字が隠れたままになるのを防ぐ）
-  var showIfVisible = function () {
-    targets.forEach(function (el) {
-      if (el.classList.contains("is-in")) return;
-      if (el.getBoundingClientRect().top < window.innerHeight * 0.95) show(el);
-    });
-  };
-
-  if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            show(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
-    );
-    targets.forEach(function (el) {
-      io.observe(el);
-    });
-    window.setTimeout(showIfVisible, 1200);
-    window.setTimeout(showIfVisible, 3000);
-  } else {
-    targets.forEach(show);
-  }
-
-  /* ------------------------------- 4. カテゴリー絞り込み（WORKS） */
-  // data-filter-group="works" のボタン群が、同じグループの
-  // data-category を持つ要素を絞り込みます。
-  document.querySelectorAll("[data-filter-group]").forEach(function (group) {
-    var name = group.getAttribute("data-filter-group");
-    var items = document.querySelectorAll('[data-filter-target="' + name + '"]');
-    var counter = document.querySelector('[data-filter-count="' + name + '"]');
-
-    group.addEventListener("click", function (e) {
-      var btn = e.target.closest(".filter__btn");
-      if (!btn) return;
-
-      var cat = btn.getAttribute("data-category") || "all";
-      group.querySelectorAll(".filter__btn").forEach(function (b) {
-        b.classList.toggle("is-active", b === btn);
-        b.setAttribute("aria-pressed", String(b === btn));
+    document.querySelectorAll('[data-project]').forEach(anchor => {
+      anchor.addEventListener('click', event => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        history.pushState(null, '', '#' + anchor.dataset.project);
+        openProject(anchor.dataset.project, anchor);
       });
-
-      var shown = 0;
-      items.forEach(function (item) {
-        var match =
-          cat === "all" ||
-          (item.getAttribute("data-category") || "").split(" ").indexOf(cat) >= 0;
-        item.classList.toggle("is-hidden", !match);
-        if (match) shown++;
-      });
-
-      if (counter) counter.textContent = shown;
     });
-  });
-
-  /* ------------------------------------ 5. ページトップへ戻るボタン */
-  if (toTop) {
-    toTop.addEventListener("click", function (e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    const readHash = () => {
+      let id;
+      try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+      if (id) openProject(id);
+      else if (dialog.open) dialog.close();
+    };
+    dialog.querySelector('.modal-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => {
+      const rect = dialog.getBoundingClientRect();
+      if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
     });
+    dialog.addEventListener('close', () => {
+      document.body.classList.remove('modal-open');
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+      if (trigger && !trigger.closest('[hidden]')) trigger.focus({preventScroll:true});
+    });
+    window.addEventListener('hashchange', readHash);
+    readHash();
+  } else if (dialog) {
+    document.querySelector('.project-details').style.display = 'block';
   }
-
-  /* -------------------------------- 6. コピーライトの年号自動更新 */
-  document.querySelectorAll("[data-year]").forEach(function (el) {
-    el.textContent = String(new Date().getFullYear());
-  });
-
-  /* ------------------- 7. お問い合わせフォームの送信（メール作成） */
-  // content.txt の [site] form_action: を設定した場合は、そのURLへ普通に送信されます
-  // （この処理は動かず、data-mail-form も付きません）。
-  // 空の場合は、入力内容から mailto: を組み立てて訪問者のメールソフトを開きます。
-  var form = document.querySelector("[data-mail-form]");
+  const form = document.querySelector('[data-mail-form]');
   if (form) {
-    var val = function (name) {
-      var el = form.elements[name];
-      return el && el.value ? el.value.trim() : "";
-    };
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      var to = form.getAttribute("data-mail-to");
-      var msg = form.querySelector("[data-form-message]");
-      if (!to) {                      // 送信先が未設定のときは案内だけ出す
-        if (msg) {
-          msg.hidden = false;
-          msg.focus();
-        }
-        return;
-      }
-
-      if (!form.checkValidity()) {    // 必須項目のチェックはブラウザに任せる
-        form.reportValidity();
-        return;
-      }
-
-      var body = [
-        "お名前: " + val("name"),
-        "会社名・団体名: " + val("company"),
-        "メールアドレス: " + val("email"),
-        "お問い合わせ種別: " + val("type"),
-        "",
-        "お問い合わせ内容:",
-        val("message"),
-        ""
-      ].join("\n");
-
-      var subject = form.getAttribute("data-mail-subject") || "お問い合わせ";
-      if (val("type")) {
-        subject += " / " + val("type");
-      }
-
-      if (msg) {
-        msg.hidden = false;
-        msg.focus();
-      }
-      window.location.href =
-        "mailto:" + to +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
+    if (new URLSearchParams(location.search).get('type') === 'speaking') form.elements.type.selectedIndex = 1;
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const to = form.dataset.mailTo;
+      const feedback = form.querySelector('.form-feedback');
+      feedback.hidden = false;
+      if (!to) { feedback.textContent = uiCopy.mail_unset; return; }
+      const values = new FormData(form);
+      const value = key => String(values.get(key) || '').trim();
+      const fillCopy = template => template.replace(/\{(name|company|email|type|message)\}/g, (_, key) => value(key));
+      const subject = fillCopy(uiCopy.mail_subject);
+      const body = fillCopy(uiCopy.mail_body);
+      feedback.textContent = uiCopy.mail_help;
+      location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
   }
+})();
 
-  /* ------------------- 8. 見出しを1文字ずつに分割（文字アニメーション用） */
-  // data-anim="chars" を付けた要素の文字を span で包み、
-  // 1文字ごとに遅延（--i）を設定します。<em> などの入れ子は保ったままです。
-  var splitChars = function (el, counter) {
-    var nodes = Array.prototype.slice.call(el.childNodes);
-    nodes.forEach(function (node) {
-      if (node.nodeType === 3) {
-        var frag = document.createDocumentFragment();
-        node.nodeValue.split("").forEach(function (ch) {
-          if (ch === " " || ch === "\n" || ch === "\t") {
-            frag.appendChild(document.createTextNode(" "));
-            return;
-          }
-          var s = document.createElement("span");
-          s.className = "a-char";
-          s.style.setProperty("--i", counter.n++);
-          s.textContent = ch;
-          frag.appendChild(s);
-        });
-        el.replaceChild(frag, node);
-      } else if (node.nodeType === 1) {
-        splitChars(node, counter);
-      }
+/* Motion is progressive enhancement: content remains visible without JS. */
+(() => {
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  if (!Element.prototype.animate) return;
+  const running = new Set();
+  const play = (element, keyframes, options) => {
+    const animation = element.animate(keyframes, options);
+    running.add(animation);
+    animation.finished.catch(() => {}).finally(() => running.delete(animation));
+    return animation;
+  };
+  // Separate the oversized title lines without changing their accessible text.
+  document.querySelectorAll('.page-intro h1').forEach(heading => {
+    [...heading.childNodes].forEach(node => {
+      if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) return;
+      const line = document.createElement('span');
+      line.className = 'motion-line';
+      node.replaceWith(line);
+      line.append(node);
+    });
+  });
+  const targets = new Map();
+  const register = (selector, type) => document.querySelectorAll(selector).forEach((element, index) => {
+    if (!element.closest('.project-details, .modal')) targets.set(element, {type, index});
+  });
+  register('.hero-copy, .hero-topline, .hero-bottom, .section-heading > .eyebrow, .speaking-copy > p, .lecture-intro-copy > p, .topic, .approach-row, .steps li, .faq details, .about-home > div, .profile > div, .fields li, .contact-layout > *, .project-caption, .contact-band-top, .contact-band-bottom, .page-intro-description', 'soft');
+  register('.project-image, .lecture-photo, .about-home figure, .profile figure, .event-entry figure', 'photo');
+  register('.section-heading h2, .speaking-copy h3, .lecture-intro-copy h2', 'heading');
+  register('.hero-display > span:not(.hero-asterisk), .page-intro h1 > span, .contact-large', 'display');
+  const reveal = (element, {type, index}) => {
+    if (preference.matches) return;
+    const delay = type === 'display' ? index % 3 * 115 : type === 'soft' ? index % 3 * 40 : 0;
+    const start = type === 'display'
+      ? {opacity:0, transform:'translateY(100px) rotate(4deg) scale(.92)', filter:'blur(8px)'}
+      : type === 'heading'
+      ? {opacity:0, transform:'translateY(65px) rotate(1.5deg)', filter:'blur(3px)'}
+      : type === 'photo'
+      ? {opacity:0, transform:'translateY(55px) scale(.96)', filter:'blur(2px)'}
+      : {opacity:0, transform:'translateY(24px)', filter:'blur(0px)'};
+    play(element, [start, {opacity:1,transform:'translateY(0) rotate(0) scale(1)',filter:'blur(0px)'}], {
+      duration: type === 'display' ? 1400 : type === 'photo' ? 1250 : type === 'heading' ? 1100 : 850,
+      delay, easing:'cubic-bezier(.16,1,.3,1)', fill:'backwards'
     });
   };
-
-  document.querySelectorAll('[data-anim="chars"]').forEach(function (el) {
-    // 読み上げは分割前の文章のままにする
-    var label = el.textContent.replace(/\s+/g, " ").trim();
-    if (label) el.setAttribute("aria-label", label);
-    splitChars(el, { n: 0 });
-  });
-
-  /* --------------- 9. リンク・ボタンの文字をホバーで入れ替える準備 */
-  // 文字を2枚重ねにして、CSS側で上下に入れ替えます（装飾のみ）。
-  document.querySelectorAll(".nav__link, .btn, .filter__btn").forEach(function (el) {
-    if (el.querySelector(".a-switch") || el.children.length) return;
-    var text = el.textContent.trim();
-    if (!text) return;
-
-    var wrap = document.createElement("span");
-    wrap.className = "a-switch";
-
-    var front = document.createElement("span");
-    front.textContent = text;
-
-    var back = document.createElement("span");
-    back.className = "dup";
-    back.textContent = text;
-    back.setAttribute("aria-hidden", "true");
-
-    wrap.appendChild(front);
-    wrap.appendChild(back);
-    el.textContent = "";
-    el.appendChild(wrap);
-  });
-
-  /* ------------------------- 10. 画像を押して詳細をポップアップ表示 */
-  // カード内の .card__detail をポップアップへ複製して表示します。
-  var modal = document.querySelector("[data-modal]");
-
-  if (modal) {
-    var mImg = modal.querySelector("[data-modal-image]");
-    var mTags = modal.querySelector("[data-modal-tags]");
-    var mTitle = modal.querySelector("[data-modal-title]");
-    var mDetail = modal.querySelector("[data-modal-detail]");
-    var opener = null;
-
-    var fill = function (box, source) {
-      box.textContent = "";
-      if (!source) return;
-      var clone = source.cloneNode(true);
-      while (clone.firstChild) box.appendChild(clone.firstChild);
-    };
-
-    var openModal = function (button) {
-      var card = button.closest(".card");
-      if (!card) return;
-
-      var thumb = button.querySelector("img");
-      var title = card.querySelector(".card__title");
-
-      if (thumb) {
-        mImg.setAttribute("src", thumb.getAttribute("src"));
-        mImg.setAttribute("width", thumb.getAttribute("width") || "");
-        mImg.setAttribute("height", thumb.getAttribute("height") || "");
-        mImg.setAttribute("alt", thumb.getAttribute("alt") || "");
-      }
-      mTitle.textContent = title ? title.textContent : "";
-      fill(mTags, card.querySelector(".tag-row"));
-      fill(mDetail, card.querySelector(".card__detail"));
-
-      opener = button;
-      if (typeof modal.showModal === "function") {
-        modal.showModal();
-      } else {
-        modal.setAttribute("open", ""); // <dialog> 未対応環境
-      }
-      modal.scrollTop = 0;
-      document.body.style.overflow = "hidden";
-    };
-
-    var closeModal = function () {
-      if (typeof modal.close === "function") {
-        modal.close();
-      } else {
-        modal.removeAttribute("open");
-        document.body.style.overflow = "";
-        if (opener) {
-          opener.focus();
-          opener = null;
-        }
-      }
-    };
-
-    document.addEventListener("click", function (e) {
-      var opened = e.target.closest(".card__open");
-      if (opened) {
-        openModal(opened);
-        return;
-      }
-      if (e.target.closest("[data-modal-close]")) {
-        closeModal();
-        return;
-      }
-      // ポップアップの外側（背景）を押したら閉じる
-      if (e.target === modal) closeModal();
-    });
-
-    // ホームの写真タイルから works.html#works-01 のように来たときは、
-    // その項目のポップアップを開く
-    var openFromHash = function () {
-      var id = window.location.hash.replace("#", "");
-      if (!id) return;
-      var card = document.getElementById(id);
-      if (!card || !card.classList.contains("card")) return;
-      var button = card.querySelector(".card__open");
-      if (!button) return;
-      card.scrollIntoView({ block: "center" });
-      openModal(button);
-    };
-
-    openFromHash();
-    window.addEventListener("hashchange", openFromHash);
-
-    // Esc・閉じるボタンのどちらでも後片付けする
-    modal.addEventListener("close", function () {
-      document.body.style.overflow = "";
-      if (opener) {
-        opener.focus();
-        opener = null;
-      }
-    });
+  let observer;
+  if (!preference.matches && 'IntersectionObserver' in window) {
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        reveal(entry.target, targets.get(entry.target));
+        observer.unobserve(entry.target);
+      });
+    }, {threshold:0.08});
+    targets.forEach((motion, element) => observer.observe(element));
   }
-
-  /* ------------- 11. スライドカード（前後ボタン・カウンター・ドラッグ） */
-  document.querySelectorAll("[data-slider]").forEach(function (slider) {
-    var track = slider.querySelector("[data-slider-track]");
-    if (!track) return;
-
-    var items = track.children;
-    var prev = slider.querySelector("[data-slider-prev]");
-    var next = slider.querySelector("[data-slider-next]");
-    var current = slider.querySelector("[data-slider-current]");
-    var total = slider.querySelector("[data-slider-total]");
-
-    if (total) total.textContent = items.length;
-    if (items.length < 2) {
-      var nav = slider.querySelector(".slider__nav");
-      if (nav) nav.hidden = true;
-      return;
-    }
-
-    // カード1枚分の移動量
-    var step = function () {
-      return items[1].offsetLeft - items[0].offsetLeft || track.clientWidth;
-    };
-
-    var indexNow = function () {
-      return Math.round(track.scrollLeft / step());
-    };
-
-    var atStart = function () {
-      return track.scrollLeft <= 2;
-    };
-
-    var atEnd = function () {
-      return track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
-    };
-
-    var setCount = function (i) {
-      if (!current) return;
-      current.textContent = Math.min(items.length, Math.max(1, i + 1));
-    };
-
-    var goTo = function (i) {
-      var max = items.length - 1;
-      if (i < 0) i = 0;
-      if (i > max) i = max;
-      // スクロールイベントを待たずにカウンターを更新する
-      setCount(i);
-      track.scrollTo({ left: items[i].offsetLeft - items[0].offsetLeft });
-    };
-
-    // 指でのスワイプやドラッグに追従させる
-    var update = function () {
-      setCount(indexNow());
-    };
-
-    track.addEventListener("scroll", update, { passive: true });
-    update();
-
-    if (prev) {
-      prev.addEventListener("click", function () {
-        // 先頭で押したら末尾へ回る
-        goTo(atStart() ? items.length - 1 : indexNow() - 1);
-      });
-    }
-
-    if (next) {
-      next.addEventListener("click", function () {
-        // 最後まで来ていたら先頭へ戻る
-        goTo(atEnd() ? 0 : indexNow() + 1);
-      });
-    }
-
-    // マウスでのドラッグ移動（指はブラウザ標準のスクロールに任せる）
-    var dragging = false;
-    var moved = false;
-    var startX = 0;
-    var startLeft = 0;
-
-    track.addEventListener("pointerdown", function (e) {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
-      dragging = true;
-      moved = false;
-      startX = e.clientX;
-      startLeft = track.scrollLeft;
-      track.classList.add("is-grabbing");
-    });
-
-    window.addEventListener("pointermove", function (e) {
-      if (!dragging) return;
-      var dx = e.clientX - startX;
-      if (Math.abs(dx) > 6) moved = true;
-      track.scrollLeft = startLeft - dx;
-    });
-
-    window.addEventListener("pointerup", function () {
-      if (!dragging) return;
-      dragging = false;
-      track.classList.remove("is-grabbing");
-      goTo(indexNow());
-    });
-
-    // ドラッグ後の指離しでリンクへ飛ばないようにする
-    track.addEventListener(
-      "click",
-      function (e) {
-        if (moved) {
-          e.preventDefault();
-          e.stopPropagation();
-          moved = false;
-        }
-      },
-      true
-    );
+  // Fade out before a local page navigation; same-page anchors and project
+  // dialogs retain their normal behavior. No interception of mail/external links.
+  let navigating = false;
+  const reset = () => {
+    navigating = false;
+    running.forEach(animation => animation.cancel());
+    running.clear();
+  };
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || preference.matches) return;
+    const anchor = event.target.closest('a[href]');
+    if (!anchor || anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self')) return;
+    const destination = new URL(anchor.href, location.href);
+    if (destination.origin !== location.origin || !/\.html$/.test(destination.pathname) || (destination.pathname === location.pathname && destination.search === location.search)) return;
+    event.preventDefault();
+    if (navigating) return;
+    navigating = true;
+    const animation = play(document.querySelector('main'), [
+      {opacity:1,transform:'translateY(0)'},
+      {opacity:0,transform:'translateY(-18px)'}
+    ], {duration:230,easing:'ease-in',fill:'forwards'});
+    animation.finished.catch(() => {}).then(() => location.assign(destination.href));
+  });
+  window.addEventListener('pageshow', event => { if (event.persisted) reset(); });
+  preference.addEventListener('change', () => {
+    if (preference.matches) { observer?.disconnect(); reset(); }
   });
 })();

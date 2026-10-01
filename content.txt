@@ -1,3 +1,6 @@
+# 表示文章を直す場合は「編集用/サイトの文章.txt」を編集してください。
+# このファイルは構造・画像・元データです。表示文章は編集用ファイルを優先します。
+
 # ==========================================================================
 #  サイトのテキストはこのファイルだけを編集してください。
 #
@@ -21,9 +24,9 @@
 name: IZUMI FUKUYAMA
 tagline: Illustration / Graphic / Web / Vibe Coding / Project
 base_url: https://pandaizumipanda.github.io/izumi-portfolio/
-instagram: #
+instagram: https://www.instagram.com/panda_love_izumi/
 # お問い合わせフォームの送信先メールアドレス（ここを自分のアドレスに書き換えてください）
-email: your@example.com
+email: pandaizumipanda@gmail.com
 # フォームサービス（Formspree など）を使う場合だけ、その送信先URLを書きます。
 # 空のままなら、送信ボタンで訪問者のメールソフトが立ち上がります。
 form_action:
@@ -31,7 +34,7 @@ form_action:
 # ヘッダーとフッターのメニュー（ファイル名 | 表示名）
 [nav]
 item: works.html | Works
-item: event.html | Event
+item: event.html | Speaking
 item: about.html | About
 item: contact.html | Contact
 
@@ -46,7 +49,7 @@ item: Web / UI
 
 # ================================================== 各ページのタイトル等
 [page index]
-title: IZUMI FUKUYAMA｜Creator / Vibe Coding Instructor
+title: 福山いずみ｜バイブコーディング講演・ワークショップ / 制作
 description: 福山いずみのポートフォリオ。イラスト、グラフィック、Web、バイブコーディング、企画など、ジャンルを横断した制作と、生成AIをテーマにした講座・登壇の実績をまとめています。
 
 [page works]
@@ -54,7 +57,7 @@ title: WORKS｜IZUMI FUKUYAMA
 description: イラスト、グラフィック、Webアプリ、プロダクト、企画、情報デザイン、研究まで。福山いずみのこれまでの制作一覧。
 
 [page event]
-title: EVENT｜IZUMI FUKUYAMA
+title: SPEAKING & EVENTS｜講演・ワークショップ / 福山いずみ
 description: 生成AI・バイブコーディングをテーマにしたワークショップ、講座、登壇のプログラム紹介。
 
 [page about]
@@ -164,6 +167,7 @@ role: Planning / UI / Illustration / Vibe Coding
 
 [work]
 image: works-06
+image_pending: true
 title: Can Label Maker
 category: vibe-coding, web, graphic
 catch: 好きなものを、一本の缶に。
@@ -174,6 +178,7 @@ role: Planning / UI / Graphic / Vibe Coding
 
 [work]
 image: works-07
+image_pending: true
 title: Internet Literacy Learning App
 category: web, project, information-design
 catch: 選びながら学ぶ、インターネットリテラシー。
@@ -355,3 +360,78 @@ p: 個人情報の開示・訂正・削除のご請求は、[お問い合わせ�
 h2: 7. 改定について
 p: 本ポリシーの内容は、必要に応じて予告なく変更する場合があります。変更後の内容は当サイトに掲載した時点から適用されます。
 updated: 最終更新日：（未記入）
+
+# ================================================== 新デザイン：講演・依頼
+# 講演写真を追加するときは speaking-photo.jpg 等を images/ に置き、photo: に指定。
+# 写真未指定の間は、講演の考え方を伝えるタイポグラフィを表示します。
+[speaking]
+label: Speaking & Workshop
+headline: AIと、つくる。
+headline: その一歩を、ともに。
+intro: アイデアを言葉にして、AIと対話し、動くものにする。バイブコーディングの講演・ワークショップを通じて、つくる楽しさと、形にするための考え方を伝えています。
+statement: 「できるかも」を、
+statement: 「つくってみた」へ。
+text: バイブコーディングは、つくりたいものを言葉で伝え、AIと対話しながらプログラムを形にしていく制作方法です。
+text: 私自身のイラスト・デザイン・Web制作の経験をもとに、アイデアの整理から、AIへの伝え方、試作、改善までを具体的に紹介します。ツールの操作だけで終わらず、自分の目的に合わせて考え、試せることを大切にしています。
+photo: speaking-01.jpg
+photo_secondary: speaking-02.jpg
+photo_secondary_alt: 参加者がパソコンを使いながら取り組むバイブコーディング講座
+photo_alt: バイブコーディングの講演・ワークショップの様子
+note: 講演・実演・体験型ワークショップなど、目的と参加者に合わせて内容をご相談いただけます。
+
+[talk]
+number: 01
+title: AIとつくる、はじめの一歩。
+format: Lecture
+text: バイブコーディングで何ができるのか。制作例とともに、アイデアを形にするプロセスを紹介します。生成AIを使ったものづくりに関心のある方への入門として。
+detail: バイブコーディングの基本 / 制作例の紹介 / アイデアから試作まで
+
+[talk]
+number: 02
+title: アイデアを、動くかたちに。
+format: Hands-on Workshop
+text: つくりたいものを整理し、AIへの指示を考え、Webの試作に取り組む体験型プログラム。実際に手を動かしながら、対話と改善の流れを学びます。
+detail: アイデア整理 / 要件の言語化 / プロンプト / 試作・改善
+
+[talk]
+number: 03
+title: デザインの視点で、AIを使う。
+format: Creative Talk
+text: 「何をつくりたいか」「誰に届けたいか」から、AIの使い方を考えるトーク。イラスト・グラフィック・Webを横断する制作の視点を共有します。
+detail: 目的と届ける相手 / 表現方法の選び方 / 伝わる見せ方
+
+[approach]
+title: 目的から、一緒に考える。
+text: 主催者の方のねらいと、参加者に持ち帰ってほしいことを伺い、テーマと構成を検討します。
+
+[approach]
+title: 制作の過程を、ひらく。
+text: 完成したものだけでなく、考えたこと、AIへの伝え方、試しながら改善する過程まで扱います。
+
+[approach]
+title: 自分で試す、きっかけに。
+text: AIの出力をそのまま受け取るのではなく、目的に合っているかを確かめ、手を加える視点を伝えます。
+
+[step]
+title: ご相談
+text: 目的、対象者、希望時期、実施形式をお知らせください。まだ決まっていない項目があっても構いません。
+
+[step]
+title: 内容のすり合わせ
+text: お話を伺い、テーマ・構成・必要な準備を整理します。条件とお見積りは個別にご相談します。
+
+[step]
+title: 準備・実施
+text: 合意した内容に沿って教材やデモを準備し、講演・ワークショップを実施します。
+
+[faq]
+question: プログラミング未経験者向けに依頼できますか？
+answer: はい。参加者の経験や関心に合わせて、基本の紹介から組み立てます。体験型の場合は、使用する端末やツールなどの準備も事前にすり合わせます。
+
+[faq]
+question: テーマや時間が決まっていなくても相談できますか？
+answer: はい。開催の目的と、どのような方に届けたいかをお知らせください。講演・実演・ワークショップの組み合わせを含めて相談できます。
+
+[faq]
+question: 講演以外の制作も依頼できますか？
+answer: イラスト、グラフィック、Web制作などのご相談も承っています。用途やご希望の納期、制作内容をお知らせください。
