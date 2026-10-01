@@ -155,7 +155,7 @@ def nav(active):
     links = [('event','Speaking'),('works','Works'),('about','About'),('contact','Contact')]
     items = ''.join(f'<a href="{key}.html" {"aria-current=page" if active == key else ""} class="{"nav-contact" if key == "contact" else ""}">{label}{arrow() if key == "contact" else ""}</a>' for key,label in links)
     return f'''<a class="skip" href="#main">本文へスキップ</a>
-<header class="header"><a class="wordmark" href="index.html" aria-label="IZUMI FUKUYAMA ホーム">IZUMI<br>FUKUYAMA<span class="wordmark-dot" aria-hidden="true">✳</span></a><span class="header-role">CREATOR &<br>VIBE CODING INSTRUCTOR</span><button class="menu-toggle" aria-controls="navigation" aria-expanded="false" type="button">Menu <span aria-hidden="true">＋</span></button><nav id="navigation" aria-label="メインナビゲーション">{items}</nav></header>'''
+<header class="header"><a class="wordmark" href="index.html" aria-label="IZUMI FUKUYAMA ホーム">IZUMI<br>FUKUYAMA</a><span class="header-role">CREATOR &<br>VIBE CODING INSTRUCTOR</span><button class="menu-toggle" aria-controls="navigation" aria-expanded="false" type="button">Menu <span aria-hidden="true">＋</span></button><nav id="navigation" aria-label="メインナビゲーション">{items}</nav></header>'''
 
 def cta():
     return f'''<section class="contact-band"><div class="contact-band-top"><p class="eyebrow">LET’S WORK TOGETHER</p><p>講演・ワークショップ、制作のご相談</p></div><a href="contact.html" class="contact-large">Let’s talk.<span aria-hidden="true">↗</span></a><div class="contact-band-bottom"><p>まだ、アイデアの段階でも。<br>まずは、お話を聞かせてください。</p><span>SPEAKING / DESIGN / CREATIVE</span></div></section>'''

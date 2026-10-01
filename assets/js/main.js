@@ -138,7 +138,7 @@
   register('.hero-display > span:not(.hero-asterisk), .page-intro h1 > span, .contact-large', 'display');
   const reveal = (element, {type, index}) => {
     if (preference.matches) return;
-    const delay = type === 'display' ? index % 3 * 115 : type === 'soft' ? index % 3 * 40 : 0;
+    const delay = type === 'display' ? index % 3 * 180 : type === 'soft' ? index % 3 * 70 : 0;
     const start = type === 'display'
       ? {opacity:0, transform:'translateY(100px) rotate(4deg) scale(.92)', filter:'blur(8px)'}
       : type === 'heading'
@@ -147,7 +147,7 @@
       ? {opacity:0, transform:'translateY(55px) scale(.96)', filter:'blur(2px)'}
       : {opacity:0, transform:'translateY(24px)', filter:'blur(0px)'};
     play(element, [start, {opacity:1,transform:'translateY(0) rotate(0) scale(1)',filter:'blur(0px)'}], {
-      duration: type === 'display' ? 1400 : type === 'photo' ? 1250 : type === 'heading' ? 1100 : 850,
+      duration: type === 'display' ? 2400 : type === 'photo' ? 2200 : type === 'heading' ? 1900 : 1500,
       delay, easing:'cubic-bezier(.16,1,.3,1)', fill:'backwards'
     });
   };
@@ -182,7 +182,7 @@
     const animation = play(document.querySelector('main'), [
       {opacity:1,transform:'translateY(0)'},
       {opacity:0,transform:'translateY(-18px)'}
-    ], {duration:230,easing:'ease-in',fill:'forwards'});
+    ], {duration:450,easing:'ease-in',fill:'forwards'});
     animation.finished.catch(() => {}).then(() => location.assign(destination.href));
   });
   window.addEventListener('pageshow', event => { if (event.persisted) reset(); });
