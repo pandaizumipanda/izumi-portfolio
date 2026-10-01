@@ -2353,3 +2353,9 @@ main {
     font-size: 7px;
   }
 }
+
+/* Link to the companion collection of interactive examples. */
+.examples-link{display:grid;grid-template-columns:1fr 1fr;gap:10%;padding-block:65px;margin-block:20px 65px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.examples-link h2{font-size:clamp(26px,3vw,42px);font-weight:500;line-height:1.6;margin:20px 0}.examples-link p:not(.eyebrow){color:var(--muted);font-size:13px}
+.examples-cta{display:grid;grid-template-columns:1fr auto;align-content:center;gap:24px 15px}.examples-cta>span:first-child{font-size:clamp(35px,4.3vw,66px);line-height:1.05;letter-spacing:-.045em}.examples-cta i{font-family:var(--serif);font-weight:400}.examples-arrow{font-size:45px;transition:transform .25s}.examples-cta:hover .examples-arrow{transform:translate(5px,-5px)}.examples-cta small{grid-column:1/-1;border-bottom:1px solid var(--ink);padding-bottom:16px;font-size:12px}
+@media(max-width:640px){.examples-link{grid-template-columns:1fr;gap:36px;padding-block:40px;margin-bottom:40px}}
